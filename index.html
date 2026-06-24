@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAJWAY CARGO — Карго аз Чин ба Тоҷикистон</title>
+<meta name="description" content="TAJWAY CARGO - Интиқоли борҳо аз Чин ба Тоҷикистон, шаҳри Истаравшан. Нархи арзон, кафолати 100%.">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background: #0f172a; min-height:100vh; color:#fff; overflow-x:hidden; }
+.container { max-width:1200px; margin:0 auto; padding:20px; }
+
+/* Animated background */
+.bg-anim { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; }
+.bg-anim .circle { position:absolute; border-radius:50%; filter:blur(80px); opacity:0.4; animation:float 20s infinite ease-in-out; }
+.bg-anim .c1 { width:400px; height:400px; background:linear-gradient(135deg,#6366f1,#8b5cf6); top:-100px; left:-100px; }
+.bg-anim .c2 { width:500px; height:500px; background:linear-gradient(135deg,#ec4899,#f43f5e); bottom:-150px; right:-100px; }
+@keyframes float { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(20px,-20px) scale(1.05);} }
+
+/* Header */
+header { text-align:center; padding:60px 0 40px; }
+header .badge { display:inline-block; background:rgba(255,255,255,0.1); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.2); padding:8px 20px; border-radius:50px; font-size:13px; text-transform:uppercase; margin-bottom:20px; color:#cbd5e1; }
+header h1 { font-size:64px; font-weight:900; letter-spacing:4px; }
+header h1 .logo-accent { background:linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+header p { font-size:20px; margin-top:15px; color:#94a3b8; }
+header .stats-row { display:flex; justify-content:center; gap:40px; margin-top:30px; }
+header .stat .num { font-size:32px; font-weight:800; color:#6366f1; }
+header .stat .lbl { font-size:12px; text-transform:uppercase; color:#64748b; }
+
+/* Nav */
+nav { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin:30px 0 40px; position:sticky; top:10px; z-index:100; }
+nav a { background:rgba(255,255,255,0.08); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); color:#e2e8f0; padding:12px 24px; border-radius:50px; text-decoration:none; transition:all 0.3s; font-size:14px; }
+nav a:hover { background:rgba(99,102,241,0.2); border-color:rgba(99,102,241,0.4); }
+
+/* Cards */
+.card { background:rgba(255,255,255,0.03); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:40px; margin-bottom:30px; }
+.card h2 { color:#fff; margin-bottom:20px; font-size:28px; display:flex; align-items:center; gap:12px; }
+.card h2 .icon-bg { width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#6366f1,#8b5cf6); display:flex; align-items:center; justify-content:center; font-size:22px; }
+
+/* Track Search */
+.track-form { display:flex; gap:12px; flex-wrap:wrap; }
+.track-form input { flex:1; min-width:280px; padding:16px 22px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:14px; font-size:16px; outline:none; color:#fff; }
+.btn { background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border:none; padding:16px 36px; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
+
+/* Timeline */
+.timeline { display:flex; justify-content:space-between; align-items:center; margin:50px 0 25px; position:relative; padding:0 30px; }
+.timeline::before { content:''; position:absolute; top:35px; left:80px; right:80px; height:3px; background:rgba(255,255,255,0.1); z-index:0; }
+.timeline-progress { position:absolute; top:35px; left:80px; height:3px; background:linear-gradient(90deg,#6366f1,#ec4899); z-index:1; width:0%; transition:width 1s ease; }
+.stage { position:relative; z-index:2; text-align:center; flex:1; }
+.stage-circle { width:70px; height:70px; border-radius:50%; background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.1); color:#64748b; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-size:28px; }
+.stage.active .stage-circle { background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-color:transparent; }
+.stage-label { font-size:13px; color:#64748b; }
+.stage.active .stage-label { color:#e2e8f0; }
+
+.result-info { background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2); padding:20px; border-radius:16px; margin-top:25px; }
+.result-error { background:rgba(244,63,94,0.1); border:1px solid rgba(244,63,94,0.2); padding:20px; border-radius:16px; margin-top:25px; color:#f43f5e; }
+
+/* Calculator */
+.calc-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.calc-grid label { display:block; color:#e2e8f0; margin-bottom:10px; font-size:14px; }
+.calc-grid input { width:100%; padding:14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; font-size:16px; color:#fff; outline:none; }
+.calc-result { background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(236,72,153,0.15)); border:1px solid rgba(99,102,241,0.2); padding:30px; border-radius:20px; text-align:center; margin-top:25px; }
+.calc-result .price { font-size:48px; font-weight:900; background:linear-gradient(135deg,#6366f1,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin:10px 0; }
+
+/* Address */
+.address-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.address-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:25px; }
+.address-text { background:rgba(0,0,0,0.2); padding:14px; border-radius:10px; font-family:monospace; margin-bottom:12px; color:#cbd5e1; font-size:13px; line-height:1.6; }
+.copy-btn { background:rgba(99,102,241,0.15); color:#6366f1; border:1px solid rgba(99,102,241,0.3); padding:10px 18px; border-radius:10px; cursor:pointer; }
+
+/* Prohibited Items */
+.prohibited { background:linear-gradient(135deg,rgba(244,63,94,0.1),rgba(251,191,36,0.1)); border:1px solid rgba(244,63,94,0.2); border-radius:20px; padding:30px; }
+.prohibited h3 { color:#f43f5e; margin-bottom:20px; }
+.prohibited-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px; }
+.prohibited-item { background:rgba(0,0,0,0.2); padding:14px 18px; border-radius:12px; }
+
+/* Contact */
+.contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.contact-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:25px; border-radius:16px; text-align:center; text-decoration:none; color:#e2e8f0; }
+
+footer { text-align:center; padding:50px 0 30px; color:#64748b; }
+
+@media(max-width:768px){
+  header h1{font-size:36px;}
+  .calc-grid, .address-grid{grid-template-columns:1fr;}
+  .timeline::before, .timeline-progress{left:40px; right:40px;}
+  .stage-circle{width:50px; height:50px; font-size:20px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-anim"><div class="circle c1"></div><div class="circle c2"></div></div>
+
+<div class="container">
+  <header>
+    <div class="badge">🚚 Карго аз Чин ба Тоҷикистон</div>
+    <h1>TAJWAY <span class="logo-accent">CARGO</span></h1>
+    <p>Зуд, бехатар, бо кафолат. Борҳои шуморо аз Чин ба Тоҷикистон мерасонем.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="num">15-25</div><div class="lbl">Рӯз интиқол</div></div>
+      <div class="stat"><div class="num">27</div><div class="lbl">Сомонӣ/кг</div></div>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#track">🔍 Санҷиши трек</a>
+    <a href="#calc">💰 Калкулятор</a>
+    <a href="#address">📍 Адрес</a>
+    <a href="#prohibited">⚠️ Манъшуда</a>
+    <a href="#contact">📞 Тамос</a>
+  </nav>
+
+  <!-- Track Search -->
+  <div class="card" id="track">
+    <h2><span class="icon-bg">🔍</span> Санҷиши трек-код</h2>
+    <p>Трек-кодатонро ворид кунед то ҷойгиршавии бори худро бубинед</p>
+    <div class="track-form">
+      <input type="text" id="trackInput" placeholder="Масалан: TAJWAY2024001" autocomplete="off">
+      <button class="btn" onclick="searchTrack()">Ҷустуҷӯ</button>
+    </div>
+    <div id="trackResult"></div>
+  </div>
+
+  <!-- Calculator -->
+  <div class="card" id="calc">
+    <h2><span class="icon-bg">💰</span> Калкулятори нарх</h2>
+    <p>Нархи 1 кг — <strong style="color:#6366f1">27 сомонӣ</strong>.</p>
+    <div class="calc-grid">
+      <div>
+        <label>Вазн (кг)</label>
+        <input type="number" id="calcWeight" placeholder="Масалан: 5.5" step="0.1" min="0" oninput="calculate()">
+      </div>
+      <div>
+        <label>Миқдори бастаҳо</label>
+        <input type="number" id="calcQty" value="1" min="1" oninput="calculate()">
+      </div>
+    </div>
+    <div class="calc-result">
+      <div class="price" id="calcPrice">0 сомонӣ</div>
+      <div id="calcDetail">Вазнро ворид кунед</div>
+    </div>
+  </div>
+
+  <!-- Address -->
+  <div class="card" id="address">
+    <h2><span class="icon-bg">📍</span> Адреси анбор</h2>
+    <div class="address-grid">
+      <div class="address-box">
+        <h3>🇨🇳 Анбор дар Чин</h3>
+        <div class="address-text" id="addrChina">KHMIR 15625450102
+浙江省金华市义乌市 商城大道与柳青路交叉口东北220米洪华小区102栋2单元一楼
+(MIR nom tel)</div>
+        <button class="copy-btn" onclick="copyText('addrChina', this)">📋 Нусхабардорӣ</button>
+      </div>
+      <div class="address-box">
+        <h3>🇹🇯 Анбор дар Тоҷикистон (Истаравшан)</h3>
+        <div class="address-text" id="addrTj">ш. Истаравшан, TAJWAY CARGO
+кӯчаи марказӣ, наздикии бозори марказӣ
+Тел: +992 71 555 50 00</div>
+        <button class="copy-btn" onclick="copyText('addrTj', this)">📋 Нусхабардорӣ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prohibited Items -->
+  <div class="card" id="prohibited">
+    <div class="prohibited">
+      <h3>⚠️ ВНИМАНИЕ! Запрещённые товары</h3>
+      <div class="prohibited-list">
+        <div class="prohibited-item">❌ Лекарства (таблетки, порошки)</div>
+        <div class="prohibited-item">❌ Оружие и электрошокеры</div>
+        <div class="prohibited-item">❌ Электронные сигареты, кальяны</div>
+        <div class="prohibited-item">❌ Смартфоны и телефоны</div>
+        <div class="prohibited-item">❌ Повербанки</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="card" id="contact">
+    <h2><span class="icon-bg">📞</span> Бо мо тамос гиред</h2>
+    <div class="contact-grid">
+      <a href="https://t.me/TAJWAYCARGO" class="contact-card" target="_blank">✈️ Telegram</a>
+      <a href="tel:+992715555000" class="contact-card">📞 Телефон</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 TAJWAY CARGO. Ҳамаи ҳуқуқҳо ҳифз карда шудаанд.</p>
+  </footer>
+</div>
+
+<script>
+// ==================== БАЗАИ ТРЕК-КОДҲО (ИНҶО ТРЕК-КОДҲОРО ИЛОВА КУНЕД) ====================
+const TRACKS_DATABASE = {
+    'TAJWAY2024001': { stage: 1, client: 'Аҳмадҷон', weight: 5.2, updated: '2026-06-20' },
+    'TAJWAYRICH001': { stage: 2, client: 'Фирдавс', weight: 12.5, updated: '2026-06-21' },
+    'TAJWAY2026999': { stage: 3, client: 'Мирсаид', weight: 8.0, updated: '2026-06-24' }
+};
+
+const STAGES = ['Чин', 'Роҳ', 'Тоҷикистон', 'Омода'];
+
+function searchTrack(){
+  const code = document.getElementById('trackInput').value.trim().toUpperCase();
+  const resultDiv = document.getElementById('trackResult');
+  if(!code){
+    resultDiv.innerHTML = '<div class="result-error">Лутфан трек-кодро ворид кунед</div>';
+    return;
+  }
+  
+  const data = TRACKS_DATABASE[code];
+  if(!data){
+    resultDiv.innerHTML = '<div class="result-error">❌ Трек-код ёфт нашуд. Лутфан санҷед ё бо мо тамос гиред.</div>';
+    return;
+  }
+  
+  renderTimeline(code, data, resultDiv);
+}
+
+function renderTimeline(code, data, container){
+  const stage = data.stage; 
+  let html = '<div class="timeline"><div class="timeline-progress" id="tlProgress"></div>';
+  STAGES.forEach((name, idx) => {
+    let cls = 'stage';
+    if(idx <= stage) cls += ' active';
+    const icon = idx === 0 ? '🇨🇳' : idx === 1 ? '🚚' : idx === 2 ? '🇹🇯' : '✅';
+    html += `<div class="${cls}"><div class="stage-circle">${icon}</div><div class="stage-label">${name}</div></div>`;
+  });
+  html += '</div>';
+  html += `<div class="result-info">
+    <p><strong>Трек-код:</strong> ${code}</p>
+    <p><strong>Мизоҷ:</strong> ${data.client}</p>
+    <p><strong>Вазн:</strong> ${data.weight} кг</p>
+    <p><strong>Ҳолат:</strong> ${STAGES[stage]} ${stage === 3 ? ' — Бор омода аст!' : ''}</p>
+    <p><strong>Навсозӣ:</strong> ${data.updated}</p>
+  </div>`;
+  container.innerHTML = html;
+  setTimeout(() => {
+    document.getElementById('tlProgress').style.width = (stage / (STAGES.length - 1)) * 100 + '%';
+  }, 100);
+}
+
+function calculate(){
+  const w = parseFloat(document.getElementById('calcWeight').value) || 0;
+  const q = parseInt(document.getElementById('calcQty').value) || 1;
+  const total = w * q * 27;
+  document.getElementById('calcPrice').textContent = total.toFixed(2) + ' сомонӣ';
+  document.getElementById('calcDetail').textContent = w > 0 ? `${w} кг × ${q} баста × 27 сомонӣ` : 'Вазнро ворид кунед';
+}
+
+function copyText(id, btn){
+  navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => {
+    btn.textContent = '✅ Нусхабардорӣ шуд';
+    setTimeout(() => { btn.textContent = '📋 Нусхабардорӣ'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
